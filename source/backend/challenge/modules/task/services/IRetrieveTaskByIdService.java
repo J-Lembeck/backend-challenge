@@ -1,9 +1,9 @@
 package backend.challenge.modules.task.services;
 
-import backend.challenge.modules.task.models.Task;
+import kikaha.urouting.api.Response;
 
 public interface IRetrieveTaskByIdService {
 
-	Task execute(Long taskId);
+	Response execute(Long taskId);
 
 }

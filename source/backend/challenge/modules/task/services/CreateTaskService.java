@@ -1,8 +1,11 @@
 package backend.challenge.modules.task.services;
 
 import backend.challenge.modules.task.dtos.TaskDTO;
+import backend.challenge.modules.task.dtos.TaskDTOFactory;
 import backend.challenge.modules.task.models.Task;
 import backend.challenge.modules.task.repositories.ITaskRepository;
+import kikaha.urouting.api.DefaultResponse;
+import kikaha.urouting.api.Response;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -18,10 +21,14 @@ public class CreateTaskService implements ICreateTaskService {
 	}
 
 	@Override
-	public Task execute(TaskDTO taskDTO) {
-		// TODO: Criar serviço responsável por criar uma tarefa
+	public Response execute(TaskDTO taskDTO) {
+		Task task = taskRepository.create(taskDTO);
 
-		return null;
+		if (task == null) {
+			return DefaultResponse.badRequest().entity("Title may not be null or empty");
+		}
+
+		return DefaultResponse.created().entity(TaskDTOFactory.build(task));
 	}
 
 }

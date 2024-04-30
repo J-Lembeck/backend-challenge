@@ -1,7 +1,7 @@
-package backend.challenge.modules.task.dtos;
+package backend.challenge.modules.task.models;
 
+import backend.challenge.modules.task.dtos.TaskDTO;
 import backend.challenge.modules.task.enums.TaskStatus;
-import backend.challenge.modules.task.models.Task;
 
 import java.util.Date;
 import java.util.UUID;

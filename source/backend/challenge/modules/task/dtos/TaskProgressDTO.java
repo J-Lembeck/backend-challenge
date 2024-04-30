@@ -1,5 +1,6 @@
 package backend.challenge.modules.task.dtos;
 
+import backend.challenge.modules.task.enums.TaskStatus;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -13,5 +14,6 @@ public class TaskProgressDTO {
 
 	private Long id;
 	private int progress;
+	private TaskStatus status;
 
 }

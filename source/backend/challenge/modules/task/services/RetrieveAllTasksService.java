@@ -1,11 +1,13 @@
 package backend.challenge.modules.task.services;
 
-import backend.challenge.modules.task.models.Task;
+import backend.challenge.modules.task.dtos.TaskDTOFactory;
 import backend.challenge.modules.task.repositories.ITaskRepository;
+import kikaha.urouting.api.DefaultResponse;
+import kikaha.urouting.api.Response;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import java.util.List;
+import java.util.stream.Collectors;
 
 @Singleton
 public class RetrieveAllTasksService implements IRetrieveAllTasksService {
@@ -18,10 +20,7 @@ public class RetrieveAllTasksService implements IRetrieveAllTasksService {
 	}
 
 	@Override
-	public List<Task> execute() {
-		// TODO: Criar serviço responsável por recuperar todas as tarefas
-
-		return null;
+	public Response execute() {
+		return DefaultResponse.ok().entity(taskRepository.show().stream().map(TaskDTOFactory::build).collect(Collectors.toList()));
 	}
-
 }

@@ -1,44 +1,81 @@
 package backend.challenge.modules.task.services;
 
+import backend.challenge.modules.task.dtos.TaskDTO;
+import backend.challenge.modules.task.enums.TaskStatus;
+import backend.challenge.modules.task.models.Task;
 import backend.challenge.modules.task.repositories.ITaskRepository;
 import backend.challenge.modules.task.repositories.TaskRepository;
 import kikaha.core.test.KikahaRunner;
+import kikaha.urouting.api.DefaultResponse;
+import kikaha.urouting.api.Response;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Matchers;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.MockitoAnnotations;
+
+import java.util.Date;
 
 @RunWith( KikahaRunner.class )
 public class UpdateTaskServiceTest {
 
 	private IUpdateTaskService updateTaskService;
 
+	@Mock
+	private ITaskRepository taskRepository = new TaskRepository();
+	private final Task initialTask = Task.create();
+	private final Task modifiedTask = Task.create();
+	private final Task updatedTask = Task.create();
+	private final Long taskId = 1L;
+	private TaskStatus taskStatus = TaskStatus.COMPLETE;
+
+	@Before
+	public void init() {
+		MockitoAnnotations.initMocks(this);
+		updateTaskService = new UpdateTaskService(taskRepository);
+
+		initialTask.setId(taskId);
+		initialTask.setTitle("Louça");
+		initialTask.setDescription("Lavar a louça");
+
+		modifiedTask.setId(1L);
+		modifiedTask.setTitle("Faculdade");
+		modifiedTask.setDescription("Estudar machine learning");
+
+		updatedTask.setId(taskId);
+		updatedTask.setTitle("Faculdade");
+		updatedTask.setDescription("Estudar machine learning");
+		updatedTask.setStatus(taskStatus);
+	}
+
 	@Test
 	public void shouldBeAbleToUpdateTask() {
-		/*
-			TODO:  Para que esse teste passe, sua aplicação deve permitir que sejam
-		         alterados apenas os campos `title` e `observation`.
-		*/
+		Mockito.when(taskRepository.index(Matchers.anyLong())).thenReturn(initialTask);
+		Mockito.when(taskRepository.update(Matchers.anyLong(), Matchers.any())).thenReturn(updatedTask);
+		Response response = updateTaskService.execute(taskId, modifiedTask);
+
+		Assert.assertNotEquals(initialTask.getTitle(), updatedTask.getTitle());
+		Assert.assertNotEquals(initialTask.getDescription(), updatedTask.getDescription());
 	}
 
 	@Test
 	public void shouldNotBeAbleToUpdateATaskThatDoesNotExist() {
-		/*
-			TODO: Para que esse teste passe, você deve validar na sua rota de update se
-			 			o id da tarefa enviada pela url existe ou não. Caso não exista, retornar um erro com status 400.
-		*/
+		Response response = updateTaskService.execute(1L, modifiedTask);
+		Response expectedResponse = DefaultResponse.notFound().statusCode(404);
+
+		Assert.assertEquals(expectedResponse.statusCode(), response.statusCode());
 	}
 
 	@Test
 	public void shouldNotBeAbleToUpdateTaskStatusManually() {
-		/*
-			TODO:  Para que esse teste passe, você não deve permitir que sua rota de update
-						 altere diretamente o `status` dessa tarefa, mantendo o mesmo status que a tarefa
-						 já possuía antes da atualização. Isso porque o único lugar que deve atualizar essa informação
-						 é a rota responsável por alterar o progresso da tarefa.
+		Mockito.when(taskRepository.index(Matchers.anyLong())).thenReturn(initialTask);
+		Mockito.when(taskRepository.update(Matchers.anyLong(), Matchers.anyObject())).thenReturn(updatedTask);
 
-		 */
+		Response response = updateTaskService.execute(taskId, modifiedTask);
+		Assert.assertNull(initialTask.getStatus());
 	}
-
-
 }

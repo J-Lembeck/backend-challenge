@@ -1,9 +1,9 @@
-package backend.challenge;
+package backend.challenge.runner;
 
-import kikaha.core.test.KikahaServerRunner;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import kikaha.core.test.KikahaServerRunner;
 
 @RunWith(KikahaServerRunner.class)
 public class Runner {

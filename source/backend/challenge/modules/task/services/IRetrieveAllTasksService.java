@@ -1,11 +1,9 @@
 package backend.challenge.modules.task.services;
 
-import backend.challenge.modules.task.models.Task;
-
-import java.util.List;
+import kikaha.urouting.api.Response;
 
 public interface IRetrieveAllTasksService {
 
-	List<Task> execute();
+	Response execute();
 
 }

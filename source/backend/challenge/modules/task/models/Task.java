@@ -11,6 +11,8 @@ import java.util.Date;
 
 @Getter
 @Setter
+@Accessors(chain = true)
+@NoArgsConstructor(staticName = "create")
 public class Task {
 
 	private Long id;
